@@ -10,17 +10,17 @@ const Onboarding = () => {
     {
       title: 'Fastest Payment in the world',
       description: 'Integrate multiple payment methods to help you up the process quickly',
-      image: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=2070',
+      image: '/images/Group 1.svg',
     },
     {
       title: 'The most Secure Platform for Customer',
       description: 'Built-in fingerprint, face recognition and more, keeping you completely safe',
-      image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2070',
+      image: '/images/Group 3.svg',
     },
     {
       title: 'Paying for Everything is Easy and Convenient',
       description: 'Built-in fingerprint, face recognition and more, keeping you completely safe',
-      image: 'https://images.unsplash.com/photo-1565514020179-026b92b84bb6?auto=format&fit=crop&q=80&w=2070',
+      image: '/images/Group 4.svg',
     },
   ];
 
@@ -42,7 +42,9 @@ const Onboarding = () => {
       </div>
 
       <div className='max-w-md w-full space-y-8'>
-        <div className='w-full h-64 rounded-2xl bg-cover bg-center' style={{ backgroundImage: `url(${step.image})` }} />
+        <div className='w-full h-64 rounded-2xl overflow-hidden'>
+          <img src={step.image} alt={step.title} className='w-full h-full object-contain' />
+        </div>
 
         <div className='space-y-4 text-center'>
           <h2 className='text-2xl font-bold'>{step.title}</h2>
