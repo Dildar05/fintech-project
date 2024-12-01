@@ -67,7 +67,7 @@ const Home = () => {
         <div>
           <p className='text-gray-400 text-sm'>Welcome back,</p>
           {/* тут должен быть имя пользователя */}
-          <p className='font-semibold text-lg'>Tanya Myroniuk</p>
+          <p className='font-semibold text-lg'>Bakha Myroniuk</p>
         </div>
       </div>
 

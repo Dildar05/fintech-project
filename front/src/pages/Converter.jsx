@@ -48,8 +48,8 @@ const Converter = () => {
 
     try {
       setIsLoading(true);
-      const response = await fetch();
-      // `https://v6.exchangerate-api.com/v6/8c27d6b84277eb7f940a56ae/pair/${fromCurrency}/${toCurrency}/${amount}`
+      const url = `https://v6.exchangerate-api.com/v6/8c27d6b84277eb7f940a56ae/pair/${fromCurrency}/${toCurrency}/${amount}`;
+      const response = await fetch(url);
       const data = await response.json();
       const resultValue = data.conversion_result.toFixed(2);
       setResult(resultValue);
