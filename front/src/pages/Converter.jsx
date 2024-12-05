@@ -85,11 +85,11 @@ const Converter = () => {
   };
 
   return (
-    <div className='min-h-[100dvh] bg-[#111827] pb-20'>
+    <div className='min-h-[100dvh] bg-[#0A0B0F] pb-20'>
       <div className='max-w-md mx-auto p-6 space-y-6'>
-        <h1 className='text-2xl font-bold mb-8'>Currency Converter</h1>
+        <h1 className='text-xl font-semibold'>Currency Converter</h1>
 
-        <div className='bg-[#1F2937] rounded-2xl p-6 space-y-6'>
+        <div className='bg-[#12131A] rounded-2xl p-6 space-y-6'>
           <div className='space-y-2'>
             <label className='text-sm text-gray-400'>Amount</label>
             <input
@@ -116,7 +116,7 @@ const Converter = () => {
 
             <button
               onClick={handleSwapCurrencies}
-              className='w-10 h-10 bg-[#374151] rounded-full flex items-center justify-center hover:bg-[#4B5563] transition-colors'
+              className='w-10 h-10 bg-customBlue rounded-full flex items-center justify-center hover:bg-[#4B5563] transition-colors'
             >
               <ArrowDownUp size={20} />
             </button>

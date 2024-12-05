@@ -59,11 +59,6 @@ const Home = () => {
   return (
     <div className='min-h-screen bg-[#0A0B0F] text-white p-6 pb-20'>
       <div className='flex items-center space-x-3 mb-8'>
-        <img
-          src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'
-          alt='Profile'
-          className='w-12 h-12 rounded-full'
-        />
         <div>
           <p className='text-gray-400 text-sm'>Welcome back,</p>
           {/* тут должен быть имя пользователя */}

@@ -58,15 +58,15 @@ const Statistics = () => {
   };
 
   return (
-    <div className='min-h-screen bg-[#111827] pb-20'>
+    <div className='min-h-screen bg-[#0A0B0F] pb-20'>
       <div className='p-6'>
         <div className='flex items-center justify-between mb-6'>
           <div className='flex items-center space-x-2'>
-            <h1 className='text-xl font-semibold'>Цели</h1>
+            <h1 className='text-xl font-semibold'>Goals</h1>
           </div>
           <button
             onClick={() => setShowAddGoal(true)}
-            className='w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors'
+            className='w-10 h-10 bg-customBlue rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors'
           >
             <Plus size={24} />
           </button>
@@ -76,7 +76,7 @@ const Statistics = () => {
           {goals.map((goal) => (
             <div
               key={goal.id}
-              className='bg-[#1F2937] rounded-xl p-4 cursor-pointer hover:bg-[#2D3748] transition-colors'
+              className='bg-[#12131A] rounded-xl p-4 cursor-pointer hover:bg-[#2D3748] transition-colors'
               onClick={() => navigate(`/goal/${goal.id}`)}
             >
               <div className='flex justify-between items-center mb-4'>
@@ -120,7 +120,7 @@ const Statistics = () => {
 
               <div className='w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-2'>
                 <div
-                  className='h-full bg-blue-500 rounded-full transition-all duration-300'
+                  className='h-full bg-customBlue rounded-full transition-all duration-300'
                   style={{ width: `${(goal.current / goal.target) * 100}%` }}
                 />
               </div>

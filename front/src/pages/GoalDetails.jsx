@@ -75,7 +75,7 @@ const GoalDetails = () => {
       </div>
 
       {/* Карточка с балансом */}
-      <div className='bg-[#1F2937] rounded-xl p-6 mb-6'>
+      <div className='bg-[#12131A] rounded-xl p-6 mb-6'>
         <div className='flex justify-between items-end mb-4'>
           <div>
             <p className='text-3xl font-bold'>{goal.current} ₸</p>
@@ -117,7 +117,7 @@ const GoalDetails = () => {
         <h2 className='text-lg font-semibold'>История транзакций</h2>
         <div className='space-y-3'>
           {goal.transactions?.map((tx, index) => (
-            <div key={index} className='flex justify-between items-center bg-[#1F2937] p-4 rounded-xl'>
+            <div key={index} className='flex justify-between items-center bg-[#12131A] p-4 rounded-xl'>
               <div>
                 <p className='font-medium'>{tx.type === 'deposit' ? 'Пополнение' : 'Снятие'}</p>
                 <p className='text-sm text-gray-400'>{tx.date}</p>
