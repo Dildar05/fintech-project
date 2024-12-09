@@ -1,8 +1,7 @@
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Numeric, Date, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Numeric
 from sqlalchemy.orm import relationship
-
-Base = declarative_base()
+from sqlalchemy import ForeignKey
+from core.database import Base, engine
 
 class Goal(Base):
     __tablename__ = "goal"
@@ -13,4 +12,5 @@ class Goal(Base):
     current_sum = Column(Numeric(10, 2))
     comment = Column(String(255))
     transactions = relationship("TransactionGoal", backref="goal", cascade="all, delete-orphan")
-
+    
+Base.metadata.create_all(bind=engine)
