@@ -15,6 +15,7 @@ const schema = yup.object().shape({
 });
 
 const SignUp = () => {
+  
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -29,7 +30,8 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://localhost:8000/api/v0/auth/register', {
+      const response = await fetch('http://127.0.0.1:8000/api/v0/auth/register', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ const SignUp = () => {
         alert(error.detail);
       }
     } catch (error) {
-      alert('Ошибка при регистрации');
+      alert(error.message);
     }
   };
 
