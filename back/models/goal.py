@@ -5,7 +5,7 @@ from core.database import Base, engine
 
 class Goal(Base):
     __tablename__ = "goal"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), nullable=False)
     user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), index=True)
     plan_sum = Column(Numeric(10, 2))

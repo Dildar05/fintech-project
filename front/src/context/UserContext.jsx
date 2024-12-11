@@ -26,6 +26,7 @@ export const UserProvider = ({ children }) => {
           const goalsResponse = await fetch(`${pathUrl}/users/${userData.id}/goals`);
           if (goalsResponse.ok) {
             const goalsData = await goalsResponse.json();
+            console.log(goalsData);
             setGoals(goalsData);  // Сохраняем цели пользователя
           } else {
             console.error('Не удалось получить цели');

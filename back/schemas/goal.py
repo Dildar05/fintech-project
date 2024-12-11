@@ -11,16 +11,14 @@ class GoalSchema(BaseModel):
     plan_sum: Decimal
     current_sum: Decimal
     comment: Optional[str]
-    transactions: List[TransactionGoalSchema] = []
 
     class Config:
         orm_mode = True
 
 
 class GoalCreateSchema(BaseModel):
-    id:int 
     name: str
     plan_sum: Decimal
-    current_sum: Decimal
+    current_sum: Decimal=0
     comment: Optional[str]
 
