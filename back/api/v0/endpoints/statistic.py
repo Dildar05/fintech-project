@@ -54,7 +54,7 @@ def create_goal_for_user(user_id: int, goal: GoalCreateSchema, db: Session = Dep
     return new_goal
 
 
-@router.get("users/{user_id}/goals", response_model=List[GoalSchema])
+@router.get("/users/{user_id}/goals", response_model=List[GoalSchema])
 def get_all_goals_for_user(user_id: int, db: Session = Depends(get_db)):
     """
     Возвращает все цели пользователя по его id.
@@ -66,7 +66,7 @@ def get_all_goals_for_user(user_id: int, db: Session = Depends(get_db)):
     goals = db.query(Goal).filter(Goal.user_id == user_id).all()
     return goals
 
-@router.get("users/{user_id}/goals/{goal_id}", response_model=GoalSchema)
+@router.get("/users/{user_id}/goals/{goal_id}", response_model=GoalSchema)
 def get_goal_for_user(user_id: int, goal_id: int, db: Session = Depends(get_db)):
     """
     Возвращает цель пользователя по его id и id цели.
