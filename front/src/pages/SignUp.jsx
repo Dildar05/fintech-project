@@ -15,7 +15,6 @@ const schema = yup.object().shape({
 });
 
 const SignUp = () => {
-  
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -30,8 +29,7 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v0/auth/register', {
-
+      const response = await fetch('http://172.20.10.4:8000/api/v0/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
