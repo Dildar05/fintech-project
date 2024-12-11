@@ -20,4 +20,8 @@ class UserCreateSchema(BaseModel):
     email: EmailStr
     password: str
     phone: Optional[str]
+    
+class UserLoginSchema(BaseModel):
+    email: EmailStr
+    password: str
 

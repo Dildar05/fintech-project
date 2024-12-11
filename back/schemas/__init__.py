@@ -1,4 +1,4 @@
-from .user import UserSchema, UserCreateSchema
+from .user import UserSchema, UserCreateSchema, UserLoginSchema
 from .goal import GoalSchema, GoalCreateSchema
 from .card import CardSchema, CardCreateSchema
 from .typeTransaction import TypeTransactionSchema, TypeTransactionCreateSchema

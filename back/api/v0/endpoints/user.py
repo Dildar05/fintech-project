@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from models.user import User
-from schemas.user import UserSchema, UserCreateSchema
+from schemas.user import UserSchema, UserCreateSchema, UserLoginSchema
 from core.database import get_db
 
 router = APIRouter()
@@ -80,3 +80,16 @@ def register(user: UserCreateSchema, db: Session = Depends(get_db)):
 
     return new_user
 
+@router.post("/auth/login", response_model=UserLoginSchema)
+def login(user: UserLoginSchema, db: Session = Depends(get_db)):
+    """
+    Авторизация пользователя.
+    """
+    existing_user = db.query(User).filter(User.email == user.email).first()
+    if not existing_user:
+        raise HTTPException(status_code=400, detail="Пользователь не найден")
+
+    if existing_user.password != user.password:
+        raise HTTPException(status_code=400, detail="Неверный пароль")
+
+    return existing_user

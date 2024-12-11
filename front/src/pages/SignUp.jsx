@@ -47,7 +47,7 @@ const SignUp = () => {
       if (response.ok) {
         const result = await response.json();
         // Сохраняем данные пользователя в localStorage
-        localStorage.setItem('user', JSON.stringify(result));
+        // localStorage.setItem('user', JSON.stringify(result));
         navigate('/login');
       } else {
         const error = await response.json();

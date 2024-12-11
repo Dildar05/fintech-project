@@ -37,7 +37,7 @@ const SignIn = () => {
       if (response.ok) {
         const result = await response.json();
         // Сохраняем токен в localStorage
-        localStorage.setItem('token', result.access_token);
+        localStorage.setItem('user', JSON.stringify(result));
         navigate('/home');
       } else {
         const error = await response.json();
