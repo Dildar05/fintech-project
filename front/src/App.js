@@ -25,13 +25,21 @@ const App = () => {
           <Route path='/registration' element={<SignUp />} />
           <Route path='/login' element={<SignIn />} />
           <Route path='/onboarding' element={<Onboarding />} />
-          <Route path='/home' element={<UserProvider>
+          <Route path='/home' element={
+            <UserProvider>
               <Home />
+
+            </UserProvider>} />
+
+
+            <Route path='/profile' element={
+            <UserProvider>
+              <Profile />
+              
             </UserProvider>} />
           <Route path='/converter' element={<Converter />} />
           <Route path='/settings' element={<SettingsP />} />
           <Route path='/language' element={<Language />} />
-          <Route path='/profile' element={<Profile />} />
           <Route path='/privacy-policy' element={<PrivacyPolicy />} />
           <Route path='/edit-profile' element={<EditProfile />} />
           <Route path='/change-password' element={<ChangePassword />} />
@@ -39,7 +47,6 @@ const App = () => {
           <Route path='/goal/:id' element={<GoalDetails />} />
         </Routes>
       </Router>
-    
   );
 };
 
