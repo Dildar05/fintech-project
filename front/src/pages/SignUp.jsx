@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Eye, EyeOff, CircleDot } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
   fullName: yup.string().required('Full Name is required'),
@@ -14,6 +15,7 @@ const schema = yup.object().shape({
 });
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -23,9 +25,36 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    // TODO: Integrate with backend API for user registration
-    console.log(data);
+  // fintech-project/front/src/pages/SignUp.jsx
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/v0/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: data.fullName,
+          email: data.email,
+          password: data.password,
+          phone: data.phoneNumber,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        // Сохраняем данные пользователя в localStorage
+        localStorage.setItem('user', JSON.stringify(result));
+        navigate('/login');
+      } else {
+        const error = await response.json();
+        alert(error.detail);
+      }
+      console.log(data.fullName, data.email, data.password, data.phoneNumber);
+    } catch (error) {
+      alert('Ошибка при регистрации');
+    }
   };
 
   return (
