@@ -1,27 +1,13 @@
-import React from 'react';
+import React , {useContext} from 'react';
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import { UserContext } from '../context/UserContext';
 export const Profile = () => {
   const navigate = useNavigate();
-  const [profileName, setProfileName] = useState(''); // Состояние для имени профиля
+  const { user } = useContext(UserContext);
 
-  // Запрос к API
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const userID = JSON.parse(localStorage.getItem('user')).id; // Получите ID пользователя из localStorage
-        const response = await fetch(`/http://localhost:8000/api/v0/auth/users/${userID}`); // Замените URL на ваш API
-        const data = await response.json();
-        setProfileName(data.name || 'Unknown'); // Установите значение имени или дефолтное
-      } catch (error) {
-        console.error('Ошибка загрузки профиля:', error);
-      }
-    };
 
-    fetchProfileData();
-  }, []);
 
 
 
@@ -41,12 +27,11 @@ export const Profile = () => {
 
       <div className='flex flex-col items-center mb-8'>
         <img
-          src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400'
+          src='/images/user_logo.png'
           alt='Profile'
           className='w-24 h-24 rounded-full mb-4'
         />
-        <h2 className='text-xl font-semibold'>{profileName}</h2>
-        <p className='text-gray-400'>Senior Designer</p>
+        <h2 className='text-xl font-semibold'>{user?.full_name}</h2>
       </div>
 
       <div className='space-y-4'>
