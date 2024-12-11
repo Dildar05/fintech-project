@@ -38,7 +38,7 @@ const Statistics = () => {
     }
   };
 
-  // Обновленная функция для добавления новой цели
+  // Обновленная функция для добавления новой целиasdf
   const handleAddGoal = async (newGoal) => {
     try {
       const createdGoal = await addGoal(newGoal); // Используем функцию из контекста
