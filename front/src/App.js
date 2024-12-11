@@ -14,27 +14,30 @@ import { EditProfile } from './pages/EditProfile';
 import { ChangePassword } from './pages/ChengePassword';
 import Statistics from './pages/Statistics';
 import GoalDetails from './pages/GoalDetails';
+import { UserProvider } from './context/UserContext';
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<LoadingScreen />} />
-        <Route path='/registration' element={<SignUp />} />
-        <Route path='/login' element={<SignIn />} />
-        <Route path='/onboarding' element={<Onboarding />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/converter' element={<Converter />} />
-        <Route path='/settings' element={<SettingsP />} />
-        <Route path='/language' element={<Language />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-        <Route path='/edit-profile' element={<EditProfile />} />
-        <Route path='/change-password' element={<ChangePassword />} />
-        <Route path='/statistics' element={<Statistics />} />
-        <Route path='/goal/:id' element={<GoalDetails />} />
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path='/' element={<LoadingScreen />} />
+          <Route path='/registration' element={<SignUp />} />
+          <Route path='/login' element={<SignIn />} />
+          <Route path='/onboarding' element={<Onboarding />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/converter' element={<Converter />} />
+          <Route path='/settings' element={<SettingsP />} />
+          <Route path='/language' element={<Language />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+          <Route path='/edit-profile' element={<EditProfile />} />
+          <Route path='/change-password' element={<ChangePassword />} />
+          <Route path='/statistics' element={<Statistics />} />
+          <Route path='/goal/:id' element={<GoalDetails />} />
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 };
 

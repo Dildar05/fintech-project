@@ -1,7 +1,9 @@
 import React from 'react';
 import { ArrowUp, ArrowDown, DollarSign, Upload, Apple, ShoppingCart } from 'lucide-react';
 import Navigation from '../components/Navigation';
+import { UserContext } from '../context/UserContext';
 const Home = () => {
+  const { user } = React.useContext(UserContext);
   const cardNumber = '4562 1122 4595 7852';
   const cvv = '6986';
   const cardId = '48940';
@@ -62,7 +64,7 @@ const Home = () => {
         <div>
           <p className='text-gray-400 text-sm'>Welcome back,</p>
           {/* тут должен быть имя пользователя */}
-          <p className='font-semibold text-lg'>Bakha Myroniuk</p>
+          <p className='font-semibold text-lg'>{user.full_name}</p>
         </div>
       </div>
 
