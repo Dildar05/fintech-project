@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 
 export const UserContext = createContext();
-const pathUrl = 'http://172.20.10.4:8000/api/v0'; // URL вашего API
+const pathUrl = 'http://localhost:8000/api/v0'; // URL вашего API
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Состояние для хранения данных пользователя
