@@ -18,14 +18,16 @@ import { UserProvider } from './context/UserContext';
 
 const App = () => {
   return (
-    <UserProvider>
+    
       <Router>
         <Routes>
           <Route path='/' element={<LoadingScreen />} />
           <Route path='/registration' element={<SignUp />} />
           <Route path='/login' element={<SignIn />} />
           <Route path='/onboarding' element={<Onboarding />} />
-          <Route path='/home' element={<Home />} />
+          <Route path='/home' element={<UserProvider>
+              <Home />
+            </UserProvider>} />
           <Route path='/converter' element={<Converter />} />
           <Route path='/settings' element={<SettingsP />} />
           <Route path='/language' element={<Language />} />
@@ -37,7 +39,7 @@ const App = () => {
           <Route path='/goal/:id' element={<GoalDetails />} />
         </Routes>
       </Router>
-    </UserProvider>
+    
   );
 };
 

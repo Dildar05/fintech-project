@@ -3,8 +3,8 @@ import { Eye, EyeOff, CircleDot } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
@@ -36,8 +36,8 @@ const SignIn = () => {
 
       if (response.ok) {
         const result = await response.json();
-        // Сохраняем токен в localStorage
-        localStorage.setItem('user', JSON.stringify(result.id));
+        // Сохраняем ID пользователя в localStorage
+        localStorage.setItem('user', JSON.stringify({ id: result.id }));
         navigate('/home');
       } else {
         const error = await response.json();

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from typing import List
 
 from models.user import User
@@ -8,6 +9,7 @@ from models.goal import Goal
 from schemas.goal import GoalSchema, GoalCreateSchema
 
 from core.database import get_db
+from sqlalchemy.exc import SQLAlchemyError
 
 router = APIRouter()
 
@@ -51,3 +53,30 @@ def create_goal_for_user(user_id: int, goal: GoalCreateSchema, db: Session = Dep
 
     return new_goal
 
+
+@router.get("users/{user_id}/goals", response_model=List[GoalSchema])
+def get_all_goals_for_user(user_id: int, db: Session = Depends(get_db)):
+    """
+    Возвращает все цели пользователя по его id.
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    goals = db.query(Goal).filter(Goal.user_id == user_id).all()
+    return goals
+
+@router.get("users/{user_id}/goals/{goal_id}", response_model=GoalSchema)
+def get_goal_for_user(user_id: int, goal_id: int, db: Session = Depends(get_db)):
+    """
+    Возвращает цель пользователя по его id и id цели.
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    goal = db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == user_id).first()
+    if not goal:
+        raise HTTPException(status_code=404, detail="Цель не найдена")
+
+    return goal

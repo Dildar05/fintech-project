@@ -1,9 +1,27 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const Profile = () => {
   const navigate = useNavigate();
+  const [profileName, setProfileName] = useState(''); // Состояние для имени профиля
+
+  // Запрос к API
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const userID = JSON.parse(localStorage.getItem('user')).id; // Получите ID пользователя из localStorage
+        const response = await fetch(`/http://localhost:8000/api/v0/auth/users/${userID}`); // Замените URL на ваш API
+        const data = await response.json();
+        setProfileName(data.name || 'Unknown'); // Установите значение имени или дефолтное
+      } catch (error) {
+        console.error('Ошибка загрузки профиля:', error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
 
 
@@ -27,7 +45,7 @@ export const Profile = () => {
           alt='Profile'
           className='w-24 h-24 rounded-full mb-4'
         />
-        <h2 className='text-xl font-semibold'>ME</h2>
+        <h2 className='text-xl font-semibold'>{profileName}</h2>
         <p className='text-gray-400'>Senior Designer</p>
       </div>
 

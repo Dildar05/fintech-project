@@ -8,8 +8,7 @@ from .card import CardSchema
 class UserSchema(BaseModel):
     full_name: Optional[str]
     email: EmailStr
-    goals: List[GoalSchema] = []
-    cards: List[CardSchema] = []
+    phone: Optional[str]
 
     class Config:
         orm_mode = True
