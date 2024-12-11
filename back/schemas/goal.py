@@ -18,6 +18,7 @@ class GoalSchema(BaseModel):
 
 
 class GoalCreateSchema(BaseModel):
+    id:int 
     name: str
     plan_sum: Decimal
     current_sum: Decimal
