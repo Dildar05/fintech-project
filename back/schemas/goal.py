@@ -18,7 +18,7 @@ class GoalSchema(BaseModel):
 
 class GoalCreateSchema(BaseModel):
     name: str
-    plan_sum: Decimal
-    current_sum: Decimal=0
-    comment: Optional[str]
+    plan_sum: float
+    current_sum: Decimal = Decimal('0')
+    comment: str = ""
 

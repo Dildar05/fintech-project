@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ArrowUp, ArrowDown } from 'lucide-react';
-import { MoneyOperationPopup } from '../components/MoneyOperationPopup';
+import { MoneyOperationPopup } from '../components/goals/MoneyOperationPopup';
 
 const GoalDetails = () => {
   const navigate = useNavigate();

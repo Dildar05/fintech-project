@@ -1,115 +1,71 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Settings, ArrowUp, Plus } from 'lucide-react';
-import { MoneyOperationPopup } from '../components/MoneyOperationPopup';
-import { GoalSettings } from '../components/GoalSettings';
+import { MoneyOperationPopup } from '../components/goals/MoneyOperationPopup';
+import { GoalSettings } from '../components/goals/GoalSettings';
+// Исправьте импорт AddGoalModal в вашем файле Statistics.jsx
+import AddGoalModal from '../components/goals/AddGoalModal';
 import Navigation from '../components/Navigation';
 import { UserContext } from '../context/UserContext';
 
 const Statistics = () => {
-  const { goals, setGoals, addGoal } = useContext(UserContext); // Используем контекст
+  const { goals, addGoal } = useContext(UserContext);
   const navigate = useNavigate();
-  const [selectedGoal, setSelectedGoal] = useState(null);
-  const [showDepositPopup, setShowDepositPopup] = useState(false);
-  const [showWithdrawPopup, setShowWithdrawPopup] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [showAddGoal, setShowAddGoal] = useState(false);
-  const [amount, setAmount] = useState('12000');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSave = () => {
-    if (showDepositPopup) {
-      const updatedGoals = goals.map((g) => {
-        if (g.id === selectedGoal.id) {
-          return { ...g, current_sum: g.current_sum + Number(amount) };
-        }
-        return g;
-      });
-      setGoals(updatedGoals);
-      setShowDepositPopup(false);
-    } else if (showWithdrawPopup) {
-      const updatedGoals = goals.map((g) => {
-        if (g.id === selectedGoal.id) {
-          return { ...g, current_sum: g.current_sum - Number(amount) };
-        }
-        return g;
-      });
-      setGoals(updatedGoals);
-      setShowWithdrawPopup(false);
-    }
-  };
-
-  // Обновленная функция для добавления новой целиasdf
-  const handleAddGoal = async (newGoal) => {
-    try {
-      const createdGoal = await addGoal(newGoal); // Используем функцию из контекста
-      setShowAddGoal(false);
-    } catch (error) {
-      alert(error.message || 'Ошибка при добавлении цели');
-    }
+  const handleAddGoal = (goalData) => {
+    addGoal(goalData);
+    setIsModalOpen(false);
   };
 
   return (
     <div className='min-h-screen bg-[#0A0B0F] pb-20'>
-      <div className='p-6'>
-        <div className='flex items-center justify-between mb-6'>
+      <div className='p-4'>
+        <div className='flex items-center justify-between mb-4'>
           <div className='flex items-center space-x-2'>
-            <h1 className='text-xl font-semibold'>Goals</h1>
+            <h1 className='text-lg font-semibold'>Goals</h1>
           </div>
           <button
-            onClick={() => setShowAddGoal(true)}
-            className='w-10 h-10 bg-customBlue rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors'
+            className='w-8 h-8 bg-customBlue rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors'
+            onClick={() => setIsModalOpen(true)}
           >
-            <Plus size={24} />
+            <Plus size={20} />
           </button>
         </div>
 
-        <div className='space-y-4'>
+        <div className='space-y-3'>
           {goals.map((goal) => (
             <div
               key={goal.id}
-              className='bg-[#12131A] rounded-xl p-4 cursor-pointer hover:bg-[#2D3748] transition-colors'
+              className='bg-[#12131A] rounded-lg p-3 cursor-pointer hover:bg-[#2D3748] transition-colors'
               onClick={() => navigate(`/goal/${goal.id}`)}
             >
-              <div className='flex justify-between items-center mb-4'>
+              <div className='flex justify-between items-center mb-3'>
                 <div className='flex items-center space-x-2'>
                   <p className='text-gray-400 font-medium'>{goal.name}</p>
                 </div>
                 <div className='flex items-center space-x-2'>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedGoal(goal);
-                      setShowDepositPopup(true);
-                    }}
-                    className='p-2 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'
-                  >
-                    <ArrowUp size={16} className='text-green-500' />
+                  <button className='p-1 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'>
+                    <ArrowUp size={14} className='text-green-500' />
                   </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedGoal(goal);
-                      setShowSettings(true);
-                    }}
-                    className='p-2 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'
-                  >
-                    <Settings size={16} className='text-gray-400' />
+                  <button className='p-1 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'>
+                    <Settings size={14} className='text-gray-400' />
                   </button>
                 </div>
               </div>
 
-              <div className='flex justify-between items-end mb-4'>
+              <div className='flex justify-between items-end mb-3'>
                 <div>
-                  <p className='text-2xl font-bold'>{goal.current_sum} ₸</p>
-                  <p className='text-sm text-gray-400'>Текущий баланс</p>
+                  <p className='text-xl font-bold'>{goal.current_sum} ₸</p>
+                  <p className='text-xs text-gray-400'>Текущий баланс</p>
                 </div>
                 <div className='text-right'>
-                  <p className='text-lg font-semibold'>{goal.plan_sum} ₸</p>
-                  <p className='text-sm text-gray-400'>Цель</p>
+                  <p className='text-md font-semibold'>{goal.plan_sum} ₸</p>
+                  <p className='text-xs text-gray-400'>Цель</p>
                 </div>
               </div>
 
-              <div className='w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-2'>
+              <div className='w-full h-2 bg-gray-700 rounded-full overflow-hidden mb-1'>
                 <div
                   className='h-full bg-customBlue rounded-full transition-all duration-300'
                   style={{ width: `${(goal.current_sum / goal.plan_sum) * 100}%` }}
@@ -126,39 +82,7 @@ const Statistics = () => {
           ))}
         </div>
       </div>
-
-      {showAddGoal && (
-        <GoalSettings
-          goal={{ id: 0, name: '', plan_sum: 0, target: 0 }}
-          onClose={() => setShowAddGoal(false)}
-          onSave={handleAddGoal}
-        />
-      )}
-
-      {showSettings && selectedGoal && (
-        <GoalSettings
-          goal={selectedGoal}
-          onClose={() => setShowSettings(false)}
-          onSave={(updatedGoal) => {
-            setGoals(goals.map((g) => (g.id === updatedGoal.id ? updatedGoal : g)));
-            setShowSettings(false);
-          }}
-        />
-      )}
-
-      {(showDepositPopup || showWithdrawPopup) && selectedGoal && (
-        <MoneyOperationPopup
-          type={showDepositPopup ? 'deposit' : 'withdraw'}
-          amount={amount}
-          onAmountChange={setAmount}
-          onClose={() => {
-            setShowDepositPopup(false);
-            setShowWithdrawPopup(false);
-            setSelectedGoal(null);
-          }}
-          onSave={handleSave}
-        />
-      )}
+      {isModalOpen && <AddGoalModal onClose={() => setIsModalOpen(false)} onSave={handleAddGoal} />}
       <Navigation />
     </div>
   );
