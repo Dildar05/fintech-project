@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 export const Profile = () => {
   const navigate = useNavigate();
 
+
+
   return (
     <div className='pb-20 p-6'>
       <div className='flex items-center justify-between mb-6'>
@@ -25,7 +27,7 @@ export const Profile = () => {
           alt='Profile'
           className='w-24 h-24 rounded-full mb-4'
         />
-        <h2 className='text-xl font-semibold'>Tanya Myroniuk</h2>
+        <h2 className='text-xl font-semibold'>ME</h2>
         <p className='text-gray-400'>Senior Designer</p>
       </div>
 

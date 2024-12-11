@@ -25,3 +25,5 @@ class UserLoginSchema(BaseModel):
     email: EmailStr
     password: str
 
+class UserLoginLocalstorageSchema(BaseModel):
+    id:int

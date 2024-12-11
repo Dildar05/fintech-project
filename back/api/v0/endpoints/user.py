@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from models.user import User
-from schemas.user import UserSchema, UserCreateSchema, UserLoginSchema
+from schemas.user import UserSchema, UserCreateSchema, UserLoginSchema, UserLoginLocalstorageSchema
 from core.database import get_db
 
 router = APIRouter()
@@ -80,7 +80,7 @@ def register(user: UserCreateSchema, db: Session = Depends(get_db)):
 
     return new_user
 
-@router.post("/auth/login", response_model=UserLoginSchema)
+@router.post("/auth/login", response_model=UserLoginLocalstorageSchema)
 def login(user: UserLoginSchema, db: Session = Depends(get_db)):
     """
     Авторизация пользователя.

@@ -39,13 +39,15 @@ def create_goal_for_user(user_id: int, goal: GoalCreateSchema, db: Session = Dep
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
-    
+
     new_goal = Goal(**goal.dict(), user_id=user_id)
     try:
-        with db.begin():  # Гарантирует атомарность транзакции
-            db.add(new_goal)
-            db.refresh(new_goal)
-    except Exception as e:
+        db.add(new_goal)
+        db.commit()  # Фиксация изменений
+        db.refresh(new_goal)  # Обновление объекта после коммита
+    except SQLAlchemyError as e:  # Ловим только ошибки SQLAlchemy
+        db.rollback()  # Откат транзакции в случае ошибки
         raise HTTPException(status_code=500, detail=f"Ошибка создания цели: {str(e)}")
-    
+
     return new_goal
+
