@@ -29,6 +29,7 @@ const SignUp = () => {
   // fintech-project/front/src/pages/SignUp.jsx
 
   const onSubmit = async (data) => {
+    console.log('Form Data:', data);
     try {
       const response = await fetch('http://127.0.0.1:8000/api/v0/auth/register', {
 
@@ -53,7 +54,6 @@ const SignUp = () => {
         const error = await response.json();
         alert(error.detail);
       }
-      console.log(data.fullName, data.email, data.password, data.phoneNumber);
     } catch (error) {
       alert(error.message);
     }
