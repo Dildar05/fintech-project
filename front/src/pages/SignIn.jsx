@@ -4,12 +4,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 });
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -19,9 +21,31 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    // TODO: Integrate with backend API for user sign-in
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch('http://localhost:8000/api/v0/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        // Сохраняем токен в localStorage
+        localStorage.setItem('token', result.access_token);
+        navigate('/home');
+      } else {
+        const error = await response.json();
+        alert(error.detail);
+      }
+    } catch (error) {
+      alert('Ошибка при входе');
+    }
   };
 
   return (

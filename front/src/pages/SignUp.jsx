@@ -28,7 +28,6 @@ const SignUp = () => {
   // fintech-project/front/src/pages/SignUp.jsx
 
   const onSubmit = async (data) => {
-    console.log('Form Data:', data);
     try {
       const response = await fetch('http://localhost:8000/api/v0/auth/register', {
         method: 'POST',
