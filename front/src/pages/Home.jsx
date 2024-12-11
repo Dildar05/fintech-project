@@ -100,7 +100,7 @@ const Home = () => {
 
         {/* Нижняя секция */}
         <div className='flex justify-between items-center text-sm text-gray-400 mt-4 relative z-10'>
-          <div className='text-2xl font-semibold text-white'>{formatBalance(cardId)} ₸</div>
+          <div className='text-2xl font-semibold text-white'>{formatBalance(cardId)} $</div>
           <div>CVV {cvv}</div>
         </div>
       </div>
