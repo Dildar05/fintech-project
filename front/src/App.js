@@ -18,35 +18,46 @@ import { UserProvider } from './context/UserContext';
 
 const App = () => {
   return (
-    
-      <Router>
-        <Routes>
-          <Route path='/' element={<LoadingScreen />} />
-          <Route path='/registration' element={<SignUp />} />
-          <Route path='/login' element={<SignIn />} />
-          <Route path='/onboarding' element={<Onboarding />} />
-          <Route path='/home' element={
+    <Router>
+      <Routes>
+        <Route path='/' element={<LoadingScreen />} />
+        <Route path='/registration' element={<SignUp />} />
+        <Route path='/login' element={<SignIn />} />
+        <Route path='/onboarding' element={<Onboarding />} />
+        <Route
+          path='/home'
+          element={
             <UserProvider>
               <Home />
+            </UserProvider>
+          }
+        />
 
-            </UserProvider>} />
-
-
-            <Route path='/profile' element={
+        <Route
+          path='/profile'
+          element={
             <UserProvider>
               <Profile />
-              
-            </UserProvider>} />
-          <Route path='/converter' element={<Converter />} />
-          <Route path='/settings' element={<SettingsP />} />
-          <Route path='/language' element={<Language />} />
-          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-          <Route path='/edit-profile' element={<EditProfile />} />
-          <Route path='/change-password' element={<ChangePassword />} />
-          <Route path='/statistics' element={<Statistics />} />
-          <Route path='/goal/:id' element={<GoalDetails />} />
-        </Routes>
-      </Router>
+            </UserProvider>
+          }
+        />
+        <Route path='/converter' element={<Converter />} />
+        <Route path='/settings' element={<SettingsP />} />
+        <Route path='/language' element={<Language />} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/edit-profile' element={<EditProfile />} />
+        <Route path='/change-password' element={<ChangePassword />} />
+        <Route
+          path='/statistics'
+          element={
+            <UserProvider>
+              <Statistics />
+            </UserProvider>
+          }
+        />
+        <Route path='/goal/:id' element={<GoalDetails />} />
+      </Routes>
+    </Router>
   );
 };
 
