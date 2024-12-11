@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
           const userData = await userResponse.json();
           setUser(userData); // Сохраняем данные о пользователе в state
           // Запрос на получение целей пользователя
-          const goalsResponse = await fetch(`${pathUrl}/users/1/goals`);
+          const goalsResponse = await fetch(`${pathUrl}/users/${userId}/goals`);
           if (goalsResponse.ok) {
             const goalsData = await goalsResponse.json();
             console.log(goalsData);
