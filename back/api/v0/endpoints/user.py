@@ -20,9 +20,6 @@ def get_all_users(db: Session = Depends(get_db)):
 
 @router.get("/users/{user_id}", response_model=UserSchema)
 def get_user(user_id: int, db: Session = Depends(get_db)):
-    """
-    Возвращает пользователя по его id.
-    """
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")

@@ -7,9 +7,12 @@ from models.user import User
 from schemas.user import UserSchema
 from models.goal import Goal
 from schemas.goal import GoalSchema, GoalCreateSchema
+from models.transactionGoal import TransactionGoal
+from schemas.transactionGoal import TransactionGoalCreateSchema, TransactionGoalSchema
 
 from core.database import get_db
 from sqlalchemy.exc import SQLAlchemyError
+from datetime import datetime
 
 router = APIRouter()
 
@@ -80,3 +83,63 @@ def get_goal_for_user(user_id: int, goal_id: int, db: Session = Depends(get_db))
         raise HTTPException(status_code=404, detail="Цель не найдена")
 
     return goal
+
+@router.post("/users/{user_id}/goals/{goal_id}/transactions", response_model=GoalSchema)
+def add_transaction(
+    user_id: int,
+    goal_id: int,
+    transaction: TransactionGoalCreateSchema,
+    db: Session = Depends(get_db)
+):
+    # Проверка пользователя
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    # Проверка цели
+    goal = db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == user_id).first()
+    if not goal:
+        raise HTTPException(status_code=404, detail="Цель не найдена")
+
+    # Создание транзакции
+    new_transaction = TransactionGoal(
+        sum=transaction.sum,
+        is_deposit=transaction.is_deposit,
+        goal_id=goal_id,
+        date=transaction.date if transaction.date else datetime.utcnow()
+    )
+
+    # Обновление текущей суммы цели
+    if new_transaction.is_deposit:
+        goal.current_sum += new_transaction.sum
+    else:
+        if goal.current_sum < new_transaction.sum:
+            raise HTTPException(status_code=400, detail="Недостаточно средств для снятия")
+        goal.current_sum -= new_transaction.sum
+
+    db.add(new_transaction)
+    db.commit()
+    db.refresh(goal)
+
+    return goal
+
+@router.get("/users/{user_id}/goals/{goal_id}/transactions", response_model=List[TransactionGoalSchema])
+def get_transactions(
+    user_id: int,
+    goal_id: int,
+    db: Session = Depends(get_db)
+):
+    # Проверка пользователя
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    # Проверка цели
+    goal = db.query(Goal).filter(Goal.id == goal_id, Goal.user_id == user_id).first()
+    if not goal:
+        raise HTTPException(status_code=404, detail="Цель не найдена")
+
+    # Получение транзакций
+    transactions = db.query(TransactionGoal).filter(TransactionGoal.goal_id == goal_id).all()
+
+    return transactions

@@ -55,7 +55,14 @@ const App = () => {
             </UserProvider>
           }
         />
-        <Route path='/goal/:id' element={<GoalDetails />} />
+        <Route
+          path='/goal/:id'
+          element={
+            <UserProvider>
+              <GoalDetails />
+            </UserProvider>
+          }
+        />
       </Routes>
     </Router>
   );

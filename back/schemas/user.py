@@ -6,6 +6,7 @@ from .goal import GoalSchema
 from .card import CardSchema
 
 class UserSchema(BaseModel):
+    id: int
     full_name: Optional[str]
     email: EmailStr
     phone: Optional[str]

@@ -4,28 +4,47 @@ export const UserContext = createContext();
 const pathUrl = 'http://localhost:8000/api/v0'; // URL вашего API
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Состояние для хранения данных пользователя
+  const [user, setUser] = useState(() => {
+    // Получаем данные пользователя из localStorage при инициализации
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [goals, setGoals] = useState([]); // Состояние для хранения целей пользователя
   const [loading, setLoading] = useState(true); // Состояние для отслеживания загрузки
-  const storedUser = localStorage.getItem('user');
-  console.log(storedUser);
-  if (!storedUser) throw new Error('Пользователь не найден в localStorage');
 
-  const userId = JSON.parse(storedUser).id; // Извлекаем ID пользователя из localStorage
+  useEffect(() => {
+    // Сохраняем или удаляем данные пользователя в localStorage при изменении состояния
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
+
   // useEffect для загрузки данных о пользователе и его целях
   useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    const userId = user.id;
+
     const fetchUserData = async () => {
       try {
         const userResponse = await fetch(`${pathUrl}/users/${userId}`); // Запрос на получение данных о пользователе
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          setUser(userData); // Сохраняем данные о пользователе в state
-          // Запрос на получение целей пользователя
+
+          // Проверяем, изменились ли данные пользователя
+          if (JSON.stringify(userData) !== JSON.stringify(user)) {
+            setUser(userData);
+          }
+
           const goalsResponse = await fetch(`${pathUrl}/users/${userId}/goals`);
           if (goalsResponse.ok) {
             const goalsData = await goalsResponse.json();
-            console.log(goalsData);
             setGoals(goalsData); // Сохраняем цели пользователя
           } else {
             console.error('Не удалось получить цели');
@@ -51,7 +70,7 @@ export const UserProvider = ({ children }) => {
 
     try {
       const pathUrl = 'http://localhost:8000/api/v0'; // Обновите URL при необходимости
-      const response = await fetch(`${pathUrl}/users/${userId}/goals`, {
+      const response = await fetch(`${pathUrl}/users/${user.id}/goals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +98,7 @@ export const UserProvider = ({ children }) => {
   // Функция для редактирования цели
   const editGoal = async (updatedGoal) => {
     try {
-      const response = await fetch(`${pathUrl}/users/${userId}/goals/${updatedGoal.id}`, {
+      const response = await fetch(`${pathUrl}/users/${user.id}/goals/${updatedGoal.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +137,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, goals, addGoal, editGoal, deleteGoal, loading }}>
+    <UserContext.Provider value={{ user, setUser, goals, addGoal, editGoal, deleteGoal, loading }}>
       {children}
     </UserContext.Provider>
   );

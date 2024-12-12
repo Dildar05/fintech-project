@@ -10,6 +10,6 @@ class Card(Base):
     user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), index=True)
     term = Column(Date, nullable=False)
     cvv = Column(String(3), nullable=False)
-    transactions = relationship("TransactionCard", backref="card", cascade="all, delete-orphan")
+    
     
 Base.metadata.create_all(bind=engine)

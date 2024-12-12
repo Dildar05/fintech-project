@@ -1,3 +1,5 @@
+# fintech-project/back/models/goal.py
+
 from sqlalchemy import Column, Integer, String, Numeric
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
@@ -11,6 +13,6 @@ class Goal(Base):
     plan_sum = Column(Numeric(10, 2))
     current_sum = Column(Numeric(10, 2))
     comment = Column(String(255))
-    transactions = relationship("TransactionGoal", backref="goal", cascade="all, delete-orphan")
+    transactions = relationship("TransactionGoal", back_populates="goal", cascade="all, delete-orphan")
     
 Base.metadata.create_all(bind=engine)

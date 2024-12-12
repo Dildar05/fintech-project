@@ -1,21 +1,22 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import List, Optional
-from datetime import date, datetime
+from datetime import datetime
+from typing import Optional
+from pydantic import BaseModel
 from decimal import Decimal
 
-class TransactionGoalSchema(BaseModel):
-    id: int
+class TransactionGoalCreateSchema(BaseModel):
     sum: Decimal
-    goal_id: int
-    date: datetime
-    type_transaction: int
+    is_deposit: bool
+    date: Optional[datetime] = None
 
     class Config:
         orm_mode = True
 
-
-class TransactionGoalCreateSchema(BaseModel):
+class TransactionGoalSchema(BaseModel):
+    id: int
     sum: Decimal
+    is_deposit: bool
     goal_id: int
     date: datetime
-    type_transaction: int
+
+    class Config:
+        orm_mode = True
