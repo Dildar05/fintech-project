@@ -62,39 +62,6 @@ export const UserProvider = ({ children }) => {
     fetchUserData();
   }, []); // useEffect с пустым массивом зависимостей выполняется один раз при монтировании компонента
 
-  // Функция для добавления новой цели
-  const addGoal = async (newGoal) => {
-    if (!user) {
-      throw new Error('Пользователь не авторизован');
-    }
-
-    try {
-      const pathUrl = 'http://localhost:8000/api/v0'; // Обновите URL при необходимости
-      const response = await fetch(`${pathUrl}/users/${user.id}/goals`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: newGoal.name,
-          plan_sum: newGoal.plan_sum,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Ошибка сети при добавлении цели');
-      }
-
-      const createdGoal = await response.json();
-      setGoals((prevGoals) => [...prevGoals, createdGoal]);
-      return createdGoal;
-    } catch (error) {
-      console.error('Ошибка при добавлении цели:', error);
-      throw error;
-    }
-  };
-
   // Функция для редактирования цели
   const editGoal = async (updatedGoal) => {
     try {
@@ -137,7 +104,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, goals, addGoal, editGoal, deleteGoal, loading }}>
+    <UserContext.Provider value={{ user, setUser, goals, editGoal, deleteGoal, loading }}>
       {children}
     </UserContext.Provider>
   );

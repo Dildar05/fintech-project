@@ -84,6 +84,27 @@ def get_goal_for_user(user_id: int, goal_id: int, db: Session = Depends(get_db))
 
     return goal
 
+# Вариант 1: Убрать response_model
+@router.delete("/users/{user_id}/goals/{goal_id}", status_code=200)
+async def delete_goal(
+    user_id: int,
+    goal_id: int,
+    db: Session = Depends(get_db)
+):
+    goal = db.query(Goal).filter(
+        Goal.id == goal_id,
+        Goal.user_id == user_id
+    ).first()
+    
+    if goal is None:
+        raise HTTPException(status_code=404, detail="Цель не найдена")
+    
+    db.delete(goal)
+    db.commit()
+    
+    return {"message": "Цель успешно удалена"}
+
+
 @router.post("/users/{user_id}/goals/{goal_id}/transactions", response_model=GoalSchema)
 def add_transaction(
     user_id: int,

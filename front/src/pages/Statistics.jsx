@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Settings, ArrowUp, Plus } from 'lucide-react';
+import { Settings, Plus, Trash2 } from 'lucide-react';
 import { MoneyOperationPopup } from '../components/goals/MoneyOperationPopup';
 import { GoalSettings } from '../components/goals/GoalSettings';
 import AddGoalModal from '../components/goals/AddGoalModal';
@@ -59,7 +59,24 @@ const Statistics = () => {
       alert('Не удалось создать цель');
     }
   };
+  // В UserContext добавляем функцию deleteGoal
+  const deleteGoal = async (goalId) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/v0/users/${user.id}/goals/${goalId}`, {
+        method: 'DELETE',
+      });
 
+      if (!response.ok) {
+        throw new Error('Ошибка при удалении цели');
+      }
+
+      // Обновляем список целей после удаления
+      setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== goalId));
+    } catch (error) {
+      console.error('Ошибка при удалении цели:', error);
+      alert('Не удалось удалить цель');
+    }
+  };
   return (
     <div className='min-h-screen bg-[#0A0B0F] pb-20'>
       <div className='p-4'>
@@ -93,10 +110,18 @@ const Statistics = () => {
                   </div>
                   <div className='flex items-center space-x-2'>
                     <button className='p-1 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'>
-                      <ArrowUp size={14} className='text-green-500' />
-                    </button>
-                    <button className='p-1 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'>
                       <Settings size={14} className='text-gray-400' />
+                    </button>
+                    <button
+                      className='p-1 bg-[#374151] rounded-lg hover:bg-red-600 transition-colors'
+                      onClick={(e) => {
+                        e.stopPropagation(); // Предотвращаем всплытие события
+                        if (window.confirm('Вы уверены, что хотите удалить эту цель?')) {
+                          deleteGoal(goal.id);
+                        }
+                      }}
+                    >
+                      <Trash2 size={14} className='text-gray-400 hover:text-white' />
                     </button>
                   </div>
                 </div>
