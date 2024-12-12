@@ -34,9 +34,30 @@ const Statistics = () => {
     fetchStatistics();
   }, [location]);
 
-  const handleAddGoal = (goalData) => {
-    setGoals((prevGoals) => [...prevGoals, goalData]);
-    setIsModalOpen(false);
+  const handleAddGoal = async (goalData) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/v0/users/${user.id}/goals`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: goalData.name,
+          plan_sum: goalData.plan_sum,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при создании цели');
+      }
+
+      const newGoal = await response.json();
+      setGoals((prevGoals) => [...prevGoals, newGoal]);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Ошибка при добавлении цели:', error);
+      alert('Не удалось создать цель');
+    }
   };
 
   return (
