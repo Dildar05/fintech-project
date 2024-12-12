@@ -61,6 +61,7 @@ export const UserProvider = ({ children }) => {
 
     fetchUserData();
   }, []); // useEffect с пустым массивом зависимостей выполняется один раз при монтировании компонента
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -107,8 +108,35 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  // Функция для изменения пароля
+  const changePassword = async (currentPassword, newPassword, confirmPassword) => {
+    if (newPassword !== confirmPassword) {
+      console.error('Новый пароль и подтверждение пароля не совпадают');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${pathUrl}/users/${user.id}/change_password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      if (response.ok) {
+        console.log('Пароль успешно изменен');
+      } else {
+        const error = await response.json();
+        console.error('Ошибка при изменении пароля:', error);
+      }
+    } catch (error) {
+      console.error('Ошибка при изменении пароля:', error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, goals, editGoal, deleteGoal, loading, logout }}>
+    <UserContext.Provider value={{ user, setUser, goals, editGoal, deleteGoal, changePassword, loading, logout }}>
       {children}
     </UserContext.Provider>
   );

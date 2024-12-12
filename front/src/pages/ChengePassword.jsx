@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { ChevronLeft, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext'; // Adjust the import path as necessary
 
 export const ChangePassword = () => {
   const navigate = useNavigate();
+  const { changePassword } = useContext(UserContext);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      alert('New passwords do not match');
+      return;
+    }
+    try {
+      await changePassword(oldPassword, newPassword);
+      alert('Password updated successfully');
+      navigate(-1);
+    } catch (error) {
+      alert('Failed to update password');
+    }
+  };
 
   return (
     <div className='min-h-screen bg-[#0A0B0F] pb-20 p-6'>
@@ -17,13 +37,15 @@ export const ChangePassword = () => {
         <h1 className='text-xl font-semibold'>Change Password</h1>
       </div>
 
-      <form className='space-y-6' onSubmit={(e) => e.preventDefault()}>
+      <form className='space-y-6' onSubmit={handleSubmit}>
         <div className='space-y-2'>
           <label className='text-sm text-gray-400'>Current Password</label>
           <div className='relative'>
             <input
               type={showOldPassword ? 'text' : 'password'}
               className='w-full bg-[#12131A] p-4 pr-12 rounded-xl outline-none focus:ring-2 focus:ring-blue-500'
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
             />
             <button
               type='button'
@@ -41,6 +63,8 @@ export const ChangePassword = () => {
             <input
               type={showNewPassword ? 'text' : 'password'}
               className='w-full bg-[#12131A] p-4 pr-12 rounded-xl outline-none focus:ring-2 focus:ring-blue-500'
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
             />
             <button
               type='button'
@@ -61,6 +85,8 @@ export const ChangePassword = () => {
             <input
               type={showConfirmPassword ? 'text' : 'password'}
               className='w-full bg-[#12131A] p-4 pr-12 rounded-xl outline-none focus:ring-2 focus:ring-blue-500'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <button
               type='button'

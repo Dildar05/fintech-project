@@ -53,7 +53,14 @@ const App = () => {
         <Route path='/language' element={<Language />} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
         <Route path='/edit-profile' element={<EditProfile />} />
-        <Route path='/change-password' element={<ChangePassword />} />
+        <Route
+          path='/change-password'
+          element={
+            <UserProvider>
+              <ChangePassword />
+            </UserProvider>
+          }
+        />
         <Route
           path='/statistics'
           element={
