@@ -91,7 +91,7 @@ def login(user: UserLoginSchema, db: Session = Depends(get_db)):
 
     return existing_user
 
-@router.put("users/{user_id}/change_password")
+@router.patch("/users/{user_id}/change_password")
 def change_password(user_id: int, user: UserChangePasswordSchema, db: Session = Depends(get_db)):
     """
     Изменение пароля пользователя.
@@ -99,13 +99,12 @@ def change_password(user_id: int, user: UserChangePasswordSchema, db: Session = 
     existing_user = db.query(User).filter(User.id == user_id).first()
     if not existing_user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
-
     if existing_user.password != user.curr_password:
-        raise HTTPException(status_code=400, detail="Неверный текущий пароль")
-
+        raise HTTPException(status_code=400, detail="Неверный старый пароль")
     if user.new_password != user.confirm_password:
         raise HTTPException(status_code=400, detail="Пароли не совпадают")
 
+    
     existing_user.password = user.new_password
     db.commit()
     db.refresh(existing_user)
