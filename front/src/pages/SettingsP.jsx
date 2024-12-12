@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ChevronRight, Globe, Lock, Shield, FileText, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
+import { UserContext } from '../context/UserContext';
 
 const SettingsP = () => {
+  const { user, setUser } = useContext(UserContext); // Получаем и user, и setUser
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
   const settingsItems = [
     {
       id: 'language',
@@ -65,12 +72,7 @@ const SettingsP = () => {
         ))}
       </div>
 
-      <button
-        className='w-full mt-8 py-4 bg-red-500/10 text-red-500 rounded-xl font-medium'
-        onClick={() => {
-          // Handle logout
-        }}
-      >
+      <button className='w-full mt-8 py-4 bg-red-500/10 text-red-500 rounded-xl font-medium' onClick={handleLogout}>
         Log Out
       </button>
       <Navigation />

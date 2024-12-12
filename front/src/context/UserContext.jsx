@@ -61,6 +61,10 @@ export const UserProvider = ({ children }) => {
 
     fetchUserData();
   }, []); // useEffect с пустым массивом зависимостей выполняется один раз при монтировании компонента
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+  };
 
   // Функция для редактирования цели
   const editGoal = async (updatedGoal) => {
@@ -104,7 +108,7 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, goals, editGoal, deleteGoal, loading }}>
+    <UserContext.Provider value={{ user, setUser, goals, editGoal, deleteGoal, loading, logout }}>
       {children}
     </UserContext.Provider>
   );

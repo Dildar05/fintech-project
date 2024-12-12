@@ -42,7 +42,14 @@ const App = () => {
           }
         />
         <Route path='/converter' element={<Converter />} />
-        <Route path='/settings' element={<SettingsP />} />
+        <Route
+          path='/settings'
+          element={
+            <UserProvider>
+              <SettingsP />
+            </UserProvider>
+          }
+        />
         <Route path='/language' element={<Language />} />
         <Route path='/privacy-policy' element={<PrivacyPolicy />} />
         <Route path='/edit-profile' element={<EditProfile />} />
