@@ -23,3 +23,11 @@ class GoalCreateSchema(BaseModel):
 
     class Config:
         orm_mode = True
+        
+class GoalUpdateSchema(BaseModel):
+    name: Optional[str] = None
+    plan_sum: Optional[float] = None
+    current_sum: Optional[float] = None
+
+    class Config:
+        orm_mode = True

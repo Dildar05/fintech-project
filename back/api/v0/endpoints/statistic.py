@@ -9,7 +9,7 @@ from models.goal import Goal
 from schemas.goal import GoalSchema, GoalCreateSchema
 from models.transactionGoal import TransactionGoal
 from schemas.transactionGoal import TransactionGoalCreateSchema, TransactionGoalSchema
-
+from schemas.goal import GoalUpdateSchema
 from core.database import get_db
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
@@ -104,6 +104,28 @@ async def delete_goal(
     
     return {"message": "Цель успешно удалена"}
 
+@router.put("/users/{user_id}/goals/{goal_id}", response_model=GoalSchema)
+async def update_goal(
+    user_id: int,
+    goal_id: int,
+    goal_data: GoalUpdateSchema,
+    db: Session = Depends(get_db)
+):
+    goal = db.query(Goal).filter(
+        Goal.id == goal_id,
+        Goal.user_id == user_id
+    ).first()
+    
+    if goal is None:
+        raise HTTPException(status_code=404, detail="Цель не найдена")
+    
+    for field, value in goal_data.dict(exclude_unset=True).items():
+        setattr(goal, field, value)
+    
+    db.commit()
+    db.refresh(goal)
+    
+    return goal
 
 @router.post("/users/{user_id}/goals/{goal_id}/transactions", response_model=GoalSchema)
 def add_transaction(

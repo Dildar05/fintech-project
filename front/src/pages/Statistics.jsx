@@ -5,6 +5,7 @@ import { MoneyOperationPopup } from '../components/goals/MoneyOperationPopup';
 import { GoalSettings } from '../components/goals/GoalSettings';
 import AddGoalModal from '../components/goals/AddGoalModal';
 import Navigation from '../components/Navigation';
+import EditGoalModal from '../components/goals/EditGoalModal';
 import { UserContext } from '../context/UserContext';
 
 const Statistics = () => {
@@ -13,6 +14,7 @@ const Statistics = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState(null);
 
   const fetchStatistics = async () => {
     if (!user) {
@@ -77,6 +79,29 @@ const Statistics = () => {
       alert('Не удалось удалить цель');
     }
   };
+  const editGoal = async (goalId, updatedData) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/v0/users/${user.id}/goals/${goalId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при обновлении цели');
+      }
+
+      const updatedGoal = await response.json();
+      setGoals((prevGoals) => prevGoals.map((goal) => (goal.id === goalId ? updatedGoal : goal)));
+      setEditingGoal(null); // Закрываем модальное окно
+    } catch (error) {
+      console.error('Ошибка при обновлении цели:', error);
+      alert('Не удалось обновить цель');
+    }
+  };
+
   return (
     <div className='min-h-screen bg-[#0A0B0F] pb-20'>
       <div className='p-4'>
@@ -109,7 +134,13 @@ const Statistics = () => {
                     <p className='text-gray-400 font-medium'>{goal.name}</p>
                   </div>
                   <div className='flex items-center space-x-2'>
-                    <button className='p-1 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'>
+                    <button
+                      className='p-1 bg-[#374151] rounded-lg hover:bg-[#4B5563] transition-colors'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingGoal(goal);
+                      }}
+                    >
                       <Settings size={14} className='text-gray-400' />
                     </button>
                     <button
@@ -155,7 +186,13 @@ const Statistics = () => {
           </div>
         )}
       </div>
-
+      {editingGoal && (
+        <EditGoalModal
+          goal={editingGoal}
+          onClose={() => setEditingGoal(null)}
+          onSave={(updatedData) => editGoal(editingGoal.id, updatedData)}
+        />
+      )}
       {isModalOpen && <AddGoalModal onClose={() => setIsModalOpen(false)} onSave={handleAddGoal} />}
       <Navigation />
     </div>
