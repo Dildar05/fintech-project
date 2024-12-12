@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from models.user import User
-from schemas.user import UserSchema, UserCreateSchema, UserLoginSchema, UserLoginLocalstorageSchema
+from schemas.user import UserSchema, UserCreateSchema, UserLoginSchema, UserLoginLocalstorageSchema, UserChangePasswordSchema
 from core.database import get_db
 
 router = APIRouter()
@@ -88,5 +88,26 @@ def login(user: UserLoginSchema, db: Session = Depends(get_db)):
 
     if existing_user.password != user.password:
         raise HTTPException(status_code=400, detail="Неверный пароль")
+
+    return existing_user
+
+@router.put("users/{user_id}/change_password")
+def change_password(user_id: int, user: UserChangePasswordSchema, db: Session = Depends(get_db)):
+    """
+    Изменение пароля пользователя.
+    """
+    existing_user = db.query(User).filter(User.id == user_id).first()
+    if not existing_user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    if existing_user.password != user.curr_password:
+        raise HTTPException(status_code=400, detail="Неверный текущий пароль")
+
+    if user.new_password != user.confirm_password:
+        raise HTTPException(status_code=400, detail="Пароли не совпадают")
+
+    existing_user.password = user.new_password
+    db.commit()
+    db.refresh(existing_user)
 
     return existing_user

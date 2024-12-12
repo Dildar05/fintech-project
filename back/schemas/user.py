@@ -27,3 +27,9 @@ class UserLoginSchema(BaseModel):
 
 class UserLoginLocalstorageSchema(BaseModel):
     id:int
+
+class UserChangePasswordSchema(BaseModel):
+    curr_password: str
+    new_password: str
+    confirm_password: str
+    
