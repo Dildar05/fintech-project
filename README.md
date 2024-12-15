@@ -23,8 +23,8 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/your-repo/goalbank.git
-cd goalbank
+git clone https://github.com/Dildar05/fintech-project.git
+cd fintech-project
 ```
 
 ### 2. Настройка Docker
@@ -119,12 +119,37 @@ front/
 
 ## API Endpoints
 
-- **`GET /goals`** \- Получение списка целей
-- **`POST /goals`** \- Создание новой цели
-- **`PUT /goals/{id}`** \- Обновление информации о цели
-- **`DELETE /goals/{id}`** \- Удаление цели
-- **`GET /currency-converter`** \- Конвертация валют
-- **`GET /users/{id}`** \- Получение информации о пользователе
+- **`GET /api/v0/users`** \- Возвращение всех пользователей из базы данных
+- **`POST /api/v0/users`** \- Создание нового пользователя в базе данных
+- **`GET /api/v0/users/{user_id}`** \-Получение пользователя 
+- **`POST /api/v0/auth/register`** \- Регистрация нового пользователя
+- **`POST /api/v0/auth/login`** \- Авторизация пользователя
+- **`PATCH /api/v0/users/{user_id}/change_password`** \- Изменение пароля пользователя
+
+- **`GET /api/v0/goals`** \- Возвращение все цели из базы данных
+- **`GET /api/v0/goals/{goal_id}`** \- Получение цели
+- **`POST /api/v0/users/{user_id}/goals`** \- Создание новую цель для пользователя по его id
+- **`GET /api/v0/users/{user_id}/goals`** \- Возвращение все цели пользователя по его id
+- **`GET /api/v0/users/{user_id}/goals/{goal_id}`** \- Возвращение цель пользователя по его id 
+- **`DELETE /api/v0/users/{user_id}/goals/{goal_id}`** \- Удаление цели
+- **`PUT /api/v0/users/{user_id}/goals/{goal_id}`** \- Изменение цели
+- **`POST /api/v0/users/{user_id}/goals/{goal_id}/transactions`** \- Добавление транзакции
+- **`GET /api/v0/users/{user_id}/goals/{goal_id}/transactions`** \- Получение транзакции
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Вклад в проект
 
@@ -136,9 +161,7 @@ front/
 4. Отправьте изменения: `git push origin feature-name`.
 5. Создайте Pull Request.
 
-## Лицензия
 
-Этот проект распространяется под лицензией MIT. Подробнее см. [LICENSE](./LICENSE).
 
 ---
 
