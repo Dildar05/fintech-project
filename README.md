@@ -44,24 +44,77 @@ docker-compose up --build
 
 ## Структура проекта
 
+### Корневая директория
 ```
-GoalBank/
-├── backend/                # Серверная часть на FastAPI
-│   ├── app/
-│   │   ├── main.py         # Основной файл приложения
-│   │   ├── models.py       # Модели данных SQLite
-│   │   ├── routers/        # Роуты API
-│   │   └── services/       # Логика обработки данных
-│   └── Dockerfile
-├── frontend/               # Клиентская часть на React
-│   ├── src/
-│   │   ├── components/     # Компоненты React
-│   │   ├── pages/          # Страницы приложения
-│   │   ├── App.js          # Основной файл приложения
-│   │   └── index.js        # Точка входа React
-│   └── Dockerfile
-├── docker-compose.yml      # Файл для Docker Compose
-└── README.md               # Описание проекта
+Dildar05-fintech-project
+├── back/                   # Серверная часть приложения
+├── front/                  # Клиентская часть приложения
+├── README.md               # Описание проекта
+└── docker-compose.yml      # Конфигурация Docker Compose
+```
+
+### Серверная часть (back)
+```
+back/
+├── api/                    # Роуты API
+│   ├── v0/                 # Версия API
+│   │   ├── endpoints/      # Эндпоинты API
+│   │   │   ├── user.py     # Эндпоинты для управления пользователями
+│   │   │   └── statistic.py # Эндпоинты для статистики
+│   │   └── __init__.py
+│   └── __init__.py
+├── core/                   # Основные модули приложения
+│   ├── database.py         # Логика подключения к базе данных
+│   └── __init__.py
+├── schemas/                # Схемы данных (Pydantic)
+│   ├── transactionGoal.py  # Схема операций с целями
+│   ├── goal.py             # Схема целей
+│   ├── card.py             # Схема карточек
+│   └── user.py             # Схема пользователей
+├── models/                 # Модели базы данных (SQLAlchemy)
+│   ├── transactionGoal.py
+│   ├── goal.py
+│   ├── card.py
+│   └── user.py
+├── main.py                 # Точка входа приложения FastAPI
+├── test.db                 # Тестовая база данных
+├── requirements.txt        # Зависимости Python
+└── Dockerfile              # Docker-файл для сервера
+```
+
+### Клиентская часть (front)
+```
+front/
+├── public/                 # Публичные файлы
+│   ├── index.html          # Основной HTML-файл
+│   └── images/             # Изображения
+├── src/                    # Исходный код приложения
+│   ├── context/            # Контексты React
+│   │   └── UserContext.jsx # Управление состоянием пользователя
+│   ├── components/         # Компоненты React
+│   │   ├── Navigation.jsx  # Навигация
+│   │   ├── LoadingScreen.jsx # Загрузка
+│   │   ├── goals/          # Компоненты для работы с целями
+│   │   │   ├── AddGoalModal.jsx
+│   │   │   ├── GoalSettings.jsx
+│   │   │   ├── EditGoalModal.jsx
+│   │   │   └── MoneyOperationPopup.jsx
+│   │   └── Onboarding.jsx  # Стартовый экран
+│   ├── pages/              # Страницы приложения
+│   │   ├── Home.jsx        # Домашняя страница
+│   │   ├── Profile.jsx     # Страница профиля
+│   │   ├── Statistics.jsx  # Статистика
+│   │   ├── SignIn.jsx      # Вход в систему
+│   │   ├── SignUp.jsx      # Регистрация
+│   │   ├── Converter.jsx   # Конвертер валют
+│   │   └── ...             # Другие страницы
+│   ├── App.js              # Основной файл React
+│   ├── style.css           # Основные стили
+│   └── index.js            # Точка входа React
+├── package.json            # Зависимости и скрипты
+├── tailwind.config.js      # Конфигурация Tailwind CSS
+├── Dockerfile              # Docker-файл для клиента
+└── README.md               # Описание клиентской части
 ```
 
 ## API Endpoints
